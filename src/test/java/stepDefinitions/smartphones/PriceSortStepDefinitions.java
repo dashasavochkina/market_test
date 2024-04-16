@@ -50,15 +50,15 @@ public class PriceSortStepDefinitions {
     }
 
     @When("фильтруем товары по цене меньше первого + {float}")
-    public void filterPriceLessFirstProduct(float diff) {
+    public void filterPriceLessFirstProduct(float increment) {
         int firstProductPrice = currentPage.getNthProductPrice(1);
-        currentPage.changeMaxPriceFilter(String.valueOf(firstProductPrice + diff));
+        currentPage.changeMaxPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @When("фильтруем товары по цене больше первого + {float}")
-    public void filterPriceMoreFirstProduct(float diff) {
+    public void filterPriceMoreFirstProduct(float increment) {
         int firstProductPrice = currentPage.getNthProductPrice(1);
-        currentPage.changeMinPriceFilter(String.valueOf(firstProductPrice + diff));
+        currentPage.changeMinPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @And("фильтруем товары по цене больше первого и меньше второго")
@@ -76,9 +76,7 @@ public class PriceSortStepDefinitions {
 
     @Then("нашлось {int} товаров")
     public void isProductCntEqual(int cnt) {
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         assertEquals(cnt, currentPage.getProductCnt());
-        driver.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT_TIMEOUT, TimeUnit.SECONDS);
     }
 
     @And("дожидаемся загрузки")

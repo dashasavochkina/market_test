@@ -83,7 +83,9 @@ public class SmartphonesPage extends AbstractPage{
     }
 
     public int getProductCnt() {
-        return driver.findElements(By.xpath(this.productsPrices)).size();
+        return (new WebDriverWait(driver, Duration.ofSeconds(1)))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(this.productsPrices)))
+                .size();
     }
 
     public int getNthProductPrice(int num) {
