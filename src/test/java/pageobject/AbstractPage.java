@@ -1,4 +1,4 @@
-package pageObject;
+package pageobject;
 
 public abstract class AbstractPage {
 }

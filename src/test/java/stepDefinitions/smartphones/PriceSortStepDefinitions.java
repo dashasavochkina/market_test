@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pageObject.SmartphonesPage;
+import pageobject.SmartphonesPage;
 
 import java.util.concurrent.TimeUnit;
 
