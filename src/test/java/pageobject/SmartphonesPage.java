@@ -14,25 +14,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SmartphonesPage extends AbstractPage{
-    public static final String SORT_DIR_ASC = "ASC";
-    public static final String SORT_DIR_DESC = "DESC";
-
     public WebDriver driver;
 
-    @FindBy(xpath = "/html/body/div[1]/div/div[4]/div/div/div[1]/div/div/div[5]/div/div/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div/noindex/div/button[2]")
+    @FindBy(xpath = "//button[@data-autotest-id=\"aprice\"]")
     private WebElement sortAscButton;
 
-    @FindBy(xpath = "/html/body/div[1]/div/div[4]/div/div/div[1]/div/div/div[5]/div/div/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div/noindex/div/button[3]")
+    @FindBy(xpath = "//button[@data-autotest-id=\"dprice\"]")
     private WebElement sortDescButton;
 
-    @FindBy(xpath = "/html/body/div[1]/div/div[4]/div/div/div[1]/div/div/div[5]/div/div/div/div/div/aside/div/div[3]/div/div/div/div/div[1]/div/fieldset/div/div/div/div[1]/span/div/div/input")
+    @FindBy(xpath = "//div[@data-auto=\"filter-range-glprice\"]//span[@data-auto=\"filter-range-min\"]//input")
     private WebElement minPriceFilterInput;
 
-    @FindBy(xpath = "/html/body/div[1]/div/div[4]/div/div/div[1]/div/div/div[5]/div/div/div/div/div/aside/div/div[3]/div/div/div/div/div[1]/div/fieldset/div/div/div/div[2]/span/div/div/input")
+    @FindBy(xpath = "//div[@data-auto=\"filter-range-glprice\"]//span[@data-auto=\"filter-range-max\"]//input")
     private WebElement maxPriceFilterInput;
 
-    private final String productsPricesXPath = "//div[@data-apiary-widget-name='@light/Organic']//span[@data-auto='snippet-price-current']/span[1]";
-    private final String preloaderScreenXPath = "//div[@data-zone-name='searchPage']//div[@data-auto='preloader']";
+    private final String productsPrices = "//div[@data-apiary-widget-name='@light/Organic']//span[@data-auto='snippet-price-current']/span[1]";
+    private final String preloaderScreen = "//div[@data-zone-name='searchPage']//div[@data-auto='preloader']";
 
     public SmartphonesPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
@@ -64,8 +61,8 @@ public class SmartphonesPage extends AbstractPage{
     }
 
     public void waitPreload() {
-        WebElement preloaderElement = driver.findElement(By.xpath(preloaderScreenXPath));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebElement preloaderElement = driver.findElement(By.xpath(preloaderScreen));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.invisibilityOf(preloaderElement));
     }
 
@@ -86,12 +83,12 @@ public class SmartphonesPage extends AbstractPage{
     }
 
     public int getProductCnt() {
-        return driver.findElements(By.xpath(this.productsPricesXPath)).size();
+        return driver.findElements(By.xpath(this.productsPrices)).size();
     }
 
     public int getNthProductPrice(int num) {
         int i = 0;
-        for (WebElement element : driver.findElements(By.xpath(this.productsPricesXPath))) {
+        for (WebElement element : driver.findElements(By.xpath(this.productsPrices))) {
             if (++i == num) {
                 return this.textPriceToInt(element.getText());
             }
@@ -102,7 +99,7 @@ public class SmartphonesPage extends AbstractPage{
 
     private ArrayList<Integer> getProductPrices() {
         ArrayList<Integer> result = new ArrayList<>();
-        for (WebElement element : driver.findElements(By.xpath(this.productsPricesXPath))) {
+        for (WebElement element : driver.findElements(By.xpath(this.productsPrices))) {
             result.add(this.textPriceToInt(element.getText()));
         }
 
