@@ -1,31 +1,22 @@
 package stepDefinitions.smartphones;
 
-import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import pageobject.SmartphonesPage;
 
-import java.util.concurrent.TimeUnit;
+import pageobject.SmartphonesPage;
+import utils.AbstractTestClass;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PriceSortStepDefinitions {
-    WebDriver driver;
+public class PriceSortStepDefinitions extends AbstractTestClass {
     SmartphonesPage currentPage;
-
-    private final int IMPLICITLY_WAIT_TIMEOUT = 5;
 
     @Given("пользователь находится на странице Смартфонов")
     public void openSmartphonesPage() {
-        driver = new ChromeDriver();
-        driver.manage().window().fullscreen();
         driver.get("https://market.yandex.ru/catalog--smartfony/26893750/list");
-        driver.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT_TIMEOUT, TimeUnit.SECONDS);
         currentPage = new SmartphonesPage(driver);
     }
 
@@ -41,53 +32,46 @@ public class PriceSortStepDefinitions {
 
     @Then("товары отображаются отсортированными по цене по возрастанию")
     public void checkProductsOrderedAsc() {
-        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.SORT_DIR_ASC));
+        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.ASC));
     }
 
     @Then("товары отображаются отсортированными по цене по убыванию")
     public void checkProductsOrderedDesc() {
-        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.SORT_DIR_DESC));
+        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.DESC));
     }
 
     @When("фильтруем товары по цене меньше первого + {float}")
     public void filterPriceLessFirstProduct(float increment) {
         int firstProductPrice = currentPage.getNthProductPrice(1);
-        currentPage.changeMaxPriceFilter(String.valueOf(firstProductPrice + increment));
+        currentPage.setMaxPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @When("фильтруем товары по цене больше первого + {float}")
     public void filterPriceMoreFirstProduct(float increment) {
         int firstProductPrice = currentPage.getNthProductPrice(1);
-        currentPage.changeMinPriceFilter(String.valueOf(firstProductPrice + increment));
+        currentPage.setMinPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @And("фильтруем товары по цене больше первого и меньше второго")
     public void filterPriceMoreFirstLessSecondProduct() {
         int firstProductPrice = currentPage.getNthProductPrice(1);
         int secondProductPrice = currentPage.getNthProductPrice(2);
-        currentPage.changeMinPriceFilter(String.valueOf(firstProductPrice));
-        currentPage.changeMaxPriceFilter(String.valueOf(secondProductPrice));
+        currentPage.setMinPriceFilter(String.valueOf(firstProductPrice));
+        currentPage.setMaxPriceFilter(String.valueOf(secondProductPrice));
     }
 
     @Then("нашлось более {int} товаров")
     public void isProductCntMore(int cnt) {
-        assertTrue(currentPage.getProductCnt() > cnt);
+        assertTrue(currentPage.getProductsCount() > cnt);
     }
 
     @Then("нашлось {int} товаров")
     public void isProductCntEqual(int cnt) {
-        assertEquals(cnt, currentPage.getProductCnt());
+        assertEquals(cnt, currentPage.getProductsCount());
     }
 
-    @And("дожидаемся загрузки")
-    public void waitReload() {
-        currentPage.waitPreload();
-    }
-
-    @After
-    public void closeBrowser() {
-        if (driver != null) {
-            driver.close();
-        }
+    @And("дожидаемся загрузки {int} секунд")
+    public void waitReload(int sec) {
+        currentPage.waitPreload(sec);
     }
 }

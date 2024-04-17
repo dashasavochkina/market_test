@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,9 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SmartphonesPage extends AbstractPage{
-    public WebDriver driver;
-
+public class SmartphonesPage extends AbstractPage {
     @FindBy(xpath = "//button[@data-autotest-id=\"aprice\"]")
     private WebElement sortAscButton;
 
@@ -32,8 +29,7 @@ public class SmartphonesPage extends AbstractPage{
     private final String preloaderScreen = "//div[@data-zone-name='searchPage']//div[@data-auto='preloader']";
 
     public SmartphonesPage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
+        super(driver);
     }
 
     public void clickSortAsc() {
@@ -44,25 +40,17 @@ public class SmartphonesPage extends AbstractPage{
         sortDescButton.click();
     }
 
-    public void changeMinPriceFilter(String value) {
+    public void setMinPriceFilter(String value) {
         minPriceFilterInput.sendKeys(value);
     }
 
-    public void clearMinPriceFilter() {
-        minPriceFilterInput.clear();
-    }
-
-    public void changeMaxPriceFilter(String value) {
+    public void setMaxPriceFilter(String value) {
         maxPriceFilterInput.sendKeys(value);
     }
 
-    public void clearMaxPriceFilter() {
-        maxPriceFilterInput.clear();
-    }
-
-    public void waitPreload() {
+    public void waitPreload(int sec) {
         WebElement preloaderElement = driver.findElement(By.xpath(preloaderScreen));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(sec));
         wait.until(ExpectedConditions.invisibilityOf(preloaderElement));
     }
 
@@ -71,8 +59,8 @@ public class SmartphonesPage extends AbstractPage{
         Integer prevPrice = productPrices.get(0);
         for (Integer curPrice : productPrices) {
             if (
-                (order.equals(SORT_DIR_ASC) && curPrice < prevPrice)
-                || (order.equals(SORT_DIR_DESC) && curPrice > prevPrice)
+                (order.equals(ASC) && curPrice < prevPrice)
+                || (order.equals(DESC) && curPrice > prevPrice)
             ) {
                 return false;
             }
@@ -82,7 +70,7 @@ public class SmartphonesPage extends AbstractPage{
         return true;
     }
 
-    public int getProductCnt() {
+    public int getProductsCount() {
         return (new WebDriverWait(driver, Duration.ofSeconds(1)))
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(this.productsPrices)))
                 .size();

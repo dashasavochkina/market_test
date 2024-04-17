@@ -1,13 +1,7 @@
 package stepDefinitions.smartphones;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import utils.AbstractTestClass;
 
-public class PriceFilterStepDefinitions {
-    WebDriver driver;
-
+public class PriceFilterStepDefinitions extends AbstractTestClass {
 
 }

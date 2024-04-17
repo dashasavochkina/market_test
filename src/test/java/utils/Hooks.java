@@ -1,16 +1,20 @@
 package utils;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.Before;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.Given;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Hooks {
-    WebDriver driver;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
-    @Before(value = "@gui")
-    public void configureWebdriver() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        System.out.println("configureWebdriver");
+public class Hooks extends AbstractTestClass {
+    @After
+    public void closeBrowser() {
+        driver.close();
+    }
+
+    @After
+    public void destroyDriver() {
+        DriverManager.destroyInstance();
     }
 }
