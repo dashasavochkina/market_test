@@ -72,37 +72,27 @@ public class SmartphonesPage extends AbstractPage {
 
     public int getProductsCount() {
         return (new WebDriverWait(driver, Duration.ofSeconds(1)))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(this.productsPrices)))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(productsPrices)))
                 .size();
     }
 
-    public int getNthProductPrice(int num) {
-        int i = 0;
-        for (WebElement element : driver.findElements(By.xpath(this.productsPrices))) {
-            if (++i == num) {
-                return this.textPriceToInt(element.getText());
-            }
-        }
-
-        throw new RuntimeException("There are no " + num + "th product on page");
+    public int getProductPriceByRowNumber(int index) {
+        return this.convertStringPriceToInt(driver.findElements(By.xpath(productsPrices)).get(index).getText());
     }
 
     private ArrayList<Integer> getProductPrices() {
         ArrayList<Integer> result = new ArrayList<>();
-        for (WebElement element : driver.findElements(By.xpath(this.productsPrices))) {
-            result.add(this.textPriceToInt(element.getText()));
+        for (WebElement element : driver.findElements(By.xpath(productsPrices))) {
+            result.add(this.convertStringPriceToInt(element.getText()));
         }
 
         return result;
     }
 
-    private int textPriceToInt(String textPrice) {
-        Pattern pattern = Pattern.compile("\\d+");
+    private int convertStringPriceToInt(String textPrice) {
+
+        Pattern pattern = Pattern.compile("^(\\ d+).*;(\\d+)$");
         Matcher matcher = pattern.matcher(textPrice);
-        String elementPrice = "";
-        while (matcher.find()) {
-            elementPrice = String.format("%s%s", elementPrice, matcher.group());
-        }
-        return Integer.parseInt(elementPrice);
+        return Integer.parseInt(matcher.group(1)+matcher.group(2));
     }
 }
