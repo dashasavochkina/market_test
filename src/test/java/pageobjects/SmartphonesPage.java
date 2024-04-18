@@ -71,9 +71,7 @@ public class SmartphonesPage extends AbstractPage {
     }
 
     public int getProductsCount() {
-        return (new WebDriverWait(driver, Duration.ofSeconds(1)))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(productsPrices)))
-                .size();
+        return driver.findElements(By.xpath(productsPrices)).size();
     }
 
     public int getProductPriceByRowNumber(int index) {
@@ -90,9 +88,12 @@ public class SmartphonesPage extends AbstractPage {
     }
 
     private int convertStringPriceToInt(String textPrice) {
-
-        Pattern pattern = Pattern.compile("^(\\ d+).*;(\\d+)$");
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(textPrice);
-        return Integer.parseInt(matcher.group(1)+matcher.group(2));
+        String elementPrice = "";
+        while (matcher.find()) {
+            elementPrice = String.format("%s%s", elementPrice, matcher.group());
+        }
+        return Integer.parseInt(elementPrice);
     }
 }

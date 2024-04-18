@@ -9,6 +9,7 @@ import pageobjects.SmartphonesPage;
 import steps.base.BaseSteps;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SmartphonesSteps extends BaseSteps {
     SmartphonesPage currentPage;
@@ -41,13 +42,13 @@ public class SmartphonesSteps extends BaseSteps {
 
     @When("фильтруем товары по цене меньше первого + {float}")
     public void filterPriceLessFirstProduct(float increment) {
-        int firstProductPrice = currentPage.getProductPriceByRowNumber(1);
+        int firstProductPrice = currentPage.getProductPriceByRowNumber(0);
         currentPage.setMaxPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @When("фильтруем товары по цене больше первого + {float}")
     public void filterPriceMoreFirstProduct(float increment) {
-        int firstProductPrice = currentPage.getProductPriceByRowNumber(1);
+        int firstProductPrice = currentPage.getProductPriceByRowNumber(0);
         currentPage.setMinPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
