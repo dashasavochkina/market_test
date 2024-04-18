@@ -1,17 +1,16 @@
-package stepDefinitions.smartphones;
+package steps;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import pageobject.SmartphonesPage;
-import utils.AbstractTestClass;
+import pageobjects.SmartphonesPage;
+import steps.base.BaseSteps;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PriceSortStepDefinitions extends AbstractTestClass {
+public class SmartphonesSteps extends BaseSteps {
     SmartphonesPage currentPage;
 
     @Given("открыта страница Смартфонов")
@@ -73,5 +72,10 @@ public class PriceSortStepDefinitions extends AbstractTestClass {
     @And("дожидаемся загрузки {int} секунд")
     public void waitReload(int sec) {
         currentPage.waitPreload(sec);
+    }
+
+    @Given("открыли браузер Google Chrome")
+    public void isBrowserOpened() {
+        assertNotNull(driver);
     }
 }
