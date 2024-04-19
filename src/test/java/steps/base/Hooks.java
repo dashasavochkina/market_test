@@ -7,7 +7,7 @@ import utils.DriverManager;
 public class Hooks {
     @Before(value="@gui")
     public void before() {
-        DriverManager.getInstance();
+        BaseSteps.driver = DriverManager.getInstance();
     }
 
     @After(value="@gui")

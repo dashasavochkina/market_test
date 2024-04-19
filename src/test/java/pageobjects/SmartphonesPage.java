@@ -74,7 +74,7 @@ public class SmartphonesPage extends AbstractPage {
         return driver.findElements(By.xpath(productsPrices)).size();
     }
 
-    public int getProductPriceByRowNumber(int index) {
+    public int getProductPriceByRowIndex(int index) {
         return this.convertStringPriceToInt(driver.findElements(By.xpath(productsPrices)).get(index).getText());
     }
 

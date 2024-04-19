@@ -12,67 +12,67 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SmartphonesSteps extends BaseSteps {
-    SmartphonesPage currentPage;
+    SmartphonesPage smartphonesPage;
 
     @Given("открыта страница Смартфонов")
     public void openSmartphonesPage() {
         driver.get("https://market.yandex.ru/catalog--smartfony/26893750/list");
-        currentPage = new SmartphonesPage(driver);
+        smartphonesPage = new SmartphonesPage(driver);
     }
 
     @When("выбираем сортировку подешевле")
     public void chooseClickSortAsc() {
-        currentPage.clickSortAsc();
+        smartphonesPage.clickSortAsc();
     }
 
     @When("выбираем сортировку подороже")
     public void chooseSortDesc() {
-        currentPage.clickSortDesc();
+        smartphonesPage.clickSortDesc();
     }
 
     @Then("товары отображаются отсортированными по цене по возрастанию")
     public void checkProductsOrderedAsc() {
-        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.ASC));
+        assertTrue(smartphonesPage.isProductsOrdered(SmartphonesPage.ASC));
     }
 
     @Then("товары отображаются отсортированными по цене по убыванию")
     public void checkProductsOrderedDesc() {
-        assertTrue(currentPage.isProductsOrdered(SmartphonesPage.DESC));
+        assertTrue(smartphonesPage.isProductsOrdered(SmartphonesPage.DESC));
     }
 
     @When("фильтруем товары по цене меньше первого + {float}")
     public void filterPriceLessFirstProduct(float increment) {
-        int firstProductPrice = currentPage.getProductPriceByRowNumber(0);
-        currentPage.setMaxPriceFilter(String.valueOf(firstProductPrice + increment));
+        int firstProductPrice = smartphonesPage.getProductPriceByRowIndex(0);
+        smartphonesPage.setMaxPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @When("фильтруем товары по цене больше первого + {float}")
     public void filterPriceMoreFirstProduct(float increment) {
-        int firstProductPrice = currentPage.getProductPriceByRowNumber(0);
-        currentPage.setMinPriceFilter(String.valueOf(firstProductPrice + increment));
+        int firstProductPrice = smartphonesPage.getProductPriceByRowIndex(0);
+        smartphonesPage.setMinPriceFilter(String.valueOf(firstProductPrice + increment));
     }
 
     @And("фильтруем товары по цене больше первого и меньше второго")
     public void filterPriceMoreFirstLessSecondProduct() {
-        int firstProductPrice = currentPage.getProductPriceByRowNumber(1);
-        int secondProductPrice = currentPage.getProductPriceByRowNumber(2);
-        currentPage.setMinPriceFilter(String.valueOf(firstProductPrice));
-        currentPage.setMaxPriceFilter(String.valueOf(secondProductPrice));
+        int firstProductPrice = smartphonesPage.getProductPriceByRowIndex(1);
+        int secondProductPrice = smartphonesPage.getProductPriceByRowIndex(2);
+        smartphonesPage.setMinPriceFilter(String.valueOf(firstProductPrice));
+        smartphonesPage.setMaxPriceFilter(String.valueOf(secondProductPrice));
     }
 
     @Then("нашлось более {int} товаров")
     public void isProductCntMore(int cnt) {
-        assertTrue(currentPage.getProductsCount() > cnt);
+        assertTrue(smartphonesPage.getProductsCount() > cnt);
     }
 
     @Then("нашлось {int} товаров")
     public void isProductCntEqual(int cnt) {
-        assertEquals(cnt, currentPage.getProductsCount());
+        assertEquals(cnt, smartphonesPage.getProductsCount());
     }
 
     @And("дожидаемся загрузки {int} секунд")
     public void waitReload(int sec) {
-        currentPage.waitPreload(sec);
+        smartphonesPage.waitPreload(sec);
     }
 
     @Given("открыли браузер Google Chrome")
